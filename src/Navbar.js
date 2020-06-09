@@ -28,26 +28,29 @@ class Navbar extends Component {
   };
 
   render() {
-    const { level, changeLevel } = this.props;
+    const { level, changeLevel, showingAllColors } = this.props;
     const { format } = this.state;
     return (
       <header className='Navbar'>
         <div className='logo'>
           <Link to='/'>Trang's True Colors</Link>
         </div>
-        <div className='slider-container'>
-          <span>Level: {level}</span>
-          <div className='slider'>
-            <Slider
-              defaultValue={level}
-              min={100}
-              max={900}
-              step={100}
-              //phải có step thì khi slide value sẽ cách nhau 100 đơn vị, vì value của colors ở trên chỉ có 100, 200...900
-              onAfterChange={changeLevel}
-            />
+        {showingAllColors && (
+          <div className='slider-container'>
+            <span>Level: {level}</span>
+            <div className='slider'>
+              <Slider
+                defaultValue={level}
+                min={100}
+                max={900}
+                step={100}
+                //phải có step thì khi slide value sẽ cách nhau 100 đơn vị, vì value của colors ở trên chỉ có 100, 200...900
+                onAfterChange={changeLevel}
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         <div className='select-container'>
           <Select value={format} onChange={this.handleChange}>
             <MenuItem value='hex'>HEX - #fff</MenuItem>
