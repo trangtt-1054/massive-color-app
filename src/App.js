@@ -5,6 +5,7 @@ import { generatePalette } from './colorHelpers';
 import { Switch, Route } from 'react-router-dom';
 import PaletteList from './PaletteList';
 import SingleColorPalette from './SingleColorPalette';
+import NewPaletteForm from './NewPaletteForm';
 
 function App() {
   console.log(generatePalette(seedColors[4]));
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <Switch>
+      <Route exact path='/palette/new' render={() => <NewPaletteForm />} />
       <Route
         exact
         path='/'
