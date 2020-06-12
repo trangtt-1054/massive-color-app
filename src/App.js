@@ -8,7 +8,6 @@ import SingleColorPalette from './SingleColorPalette';
 import NewPaletteForm from './NewPaletteForm';
 
 function App() {
-  console.log(generatePalette(seedColors[4]));
   const findPalette = (id) => {
     return seedColors.find((palette) => palette.id === id);
   };
