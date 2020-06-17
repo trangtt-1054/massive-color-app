@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    display: 'flex',
+    alignItems: 'center'
   },
   drawerHeader: {
     display: 'flex',
@@ -54,6 +56,20 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
+  container: {
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  },
+  buttons: {
+    width: '100%',
+  },
+  button: {
+    width: '50%'
+  }
 }));
 
 export default function PersistentDrawerLeft(props) {
@@ -138,9 +154,10 @@ export default function PersistentDrawerLeft(props) {
           </IconButton>
         </div>
         <Divider />
-        <Typography variant='h4'>Trang's New Palette</Typography>
-        <div>
-          <Button variant='contained' color='secondary' onClick={clearColor}>
+        <div className={classes.container}>
+        <Typography variant='h4' gutterBottom>Trang's New Palette</Typography>
+        <div className={classes.buttons}>
+          <Button variant='contained' color='secondary' onClick={clearColor} className={classes.button}>
             Clear Palette
           </Button>
           <Button
@@ -148,6 +165,7 @@ export default function PersistentDrawerLeft(props) {
             color='primary'
             onClick={addRandomColor}
             disabled={paletteFull}
+            className={classes.button}
           >
             Random Color
           </Button>
@@ -157,6 +175,7 @@ export default function PersistentDrawerLeft(props) {
           addColor={addColor}
           colors={colors}
         />
+        </div>
       </Drawer>
       <main
         className={clsx(classes.content, {
