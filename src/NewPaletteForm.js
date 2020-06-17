@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PaletteFormNav from './PaletteFormNav';
+import ColorPickerForm from './ColorPickerForm';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,9 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { ChromePicker } from 'react-color';
 import DraggableColorList from './DraggableColorList';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { arrayMove } from 'react-sortable-hoc';
 
 const drawerWidth = 400;
@@ -19,23 +18,6 @@ const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-  },
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   hide: {
     display: 'none',
@@ -78,41 +60,24 @@ export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const [currentColor, setCurrentColor] = useState('teal');
   const [colors, setColors] = useState(props.palettes[0].colors);
-  const [newColorName, setNewColorName] = useState('');
-  const [newPaletteName, setNewPaletteName] = useState('');
+  //const [newColorName, setNewColorName] = useState('');
+  //const [newPaletteName, setNewPaletteName] = useState('');
   const { palettes, maxColors } = props;
   const paletteFull = colors.length >= maxColors;
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  const updateCurrentColor = (newColor) => {
-    setCurrentColor(newColor.hex);
-  };
-
-  const addColor = () => {
-    const newColor = {
-      color: currentColor,
-      name: newColorName,
-    };
+  const addColor = (newColor) => {
     setColors([...colors, newColor]);
-    setNewColorName('');
+    //setNewColorName('');
   };
 
-  const handleColorNameChange = (e) => {
-    setNewColorName(e.target.value);
-  };
-
-  const handleNewPaletteNameChange = (e) => {
-    setNewPaletteName(e.target.value);
-  };
+  // const handleNewPaletteNameChange = (e) => {
+  //   setNewPaletteName(e.target.value);
+  // };
 
   const savePalette = (palettename) => {
     //let name = newPaletteName;
@@ -144,26 +109,11 @@ export default function PersistentDrawerLeft(props) {
     setColors([...colors, randomColor]);
   };
 
-  useEffect(() => {
-    ValidatorForm.addValidationRule('isColorNameUnique', (value) => {
-      return colors.every(
-        ({ name }) => name.toLowerCase() !== value.toLowerCase()
-      );
-    });
-  }, [colors]);
-  //nếu dependencies là empty array thì effect chỉ chạy 1 lần lúc component mount
-
-  useEffect(() => {
-    ValidatorForm.addValidationRule('isColorUnique', (value) => {
-      return colors.every(({ color }) => color !== currentColor);
-    });
-  }, [colors, currentColor]);
-
   return (
     <div className={classes.root}>
       <PaletteFormNav
         open={open}
-        classes={classes}
+        //classes={classes}
         palettes={palettes}
         setOpen={setOpen}
         colors={colors}
@@ -202,32 +152,11 @@ export default function PersistentDrawerLeft(props) {
             Random Color
           </Button>
         </div>
-        <ChromePicker
-          color={currentColor}
-          onChangeComplete={(newColor) => updateCurrentColor(newColor)}
+        <ColorPickerForm
+          paletteFull={paletteFull}
+          addColor={addColor}
+          colors={colors}
         />
-        <ValidatorForm onSubmit={addColor}>
-          <TextValidator
-            name='newColorName'
-            value={newColorName}
-            onChange={handleColorNameChange}
-            validators={['required', 'isColorNameUnique', 'isColorUnique']}
-            errorMessages={[
-              'this field is required',
-              'Name taken',
-              'Color already exists',
-            ]}
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            style={{ backgroundColor: paletteFull ? 'grey' : currentColor }}
-            type='submit'
-            disabled={paletteFull}
-          >
-            {paletteFull ? 'Palette Full!' : 'Add Color'}
-          </Button>
-        </ValidatorForm>
       </Drawer>
       <main
         className={clsx(classes.content, {
