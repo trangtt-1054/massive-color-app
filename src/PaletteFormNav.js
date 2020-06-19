@@ -64,6 +64,11 @@ const PaletteFormNav = props => {
 
   const showForm = () => {
     setFormShowing(true);
+    console.log(formShowing);
+  };
+
+  const hideForm = () => {
+    setFormShowing(false);
   };
 
   return (
@@ -111,7 +116,11 @@ const PaletteFormNav = props => {
         </div>
       </AppBar>
       {formShowing && (
-        <PaletteMetaForm palettes={palettes} savePalette={savePalette} />
+        <PaletteMetaForm
+          palettes={palettes}
+          savePalette={savePalette}
+          hideForm={hideForm}
+        />
       )}
     </div>
   );
