@@ -11,7 +11,7 @@ class PaletteList extends Component {
   };
 
   render() {
-    const { palettes, classes } = this.props;
+    const { palettes, classes, deletePalette } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.container}>
@@ -25,6 +25,9 @@ class PaletteList extends Component {
                 {...palette}
                 //make it arrow function because WE NEED TO PASS IN THE ID
                 handleClick={() => this.goToPalette(palette.id)}
+                deletePalette={deletePalette}
+                key={palette.id}
+                id={palette.id}
               />
             ))}
           </div>
