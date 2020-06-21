@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Palette from './Palette';
 import seedColors from './seedColors';
 import { generatePalette } from './colorHelpers';
 import { Switch, Route } from 'react-router-dom';
@@ -7,6 +6,7 @@ import PaletteList from './PaletteList';
 import SingleColorPalette from './SingleColorPalette';
 import NewPaletteForm from './NewPaletteForm';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import Palette from './Palette';
 import Page from './Page';
 
 function App() {
@@ -98,10 +98,6 @@ function App() {
         </TransitionGroup>
       )}
     />
-
-    // <div>
-    //   <Palette palette={generatePalette(seedColors[4])} />
-    // </div>
   );
 }
 

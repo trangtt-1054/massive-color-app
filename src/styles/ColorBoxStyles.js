@@ -32,7 +32,7 @@ export default {
   },
   colorName: {
     color: (props) =>
-      chroma(props.background).luminance() <= 0.08 ? 'white' : 'back',
+      chroma(props.background).luminance() <= 0.08 ? 'white' : 'black',
   },
   seeMore: {
     color: (props) =>

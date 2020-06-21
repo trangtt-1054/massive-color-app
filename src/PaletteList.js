@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import MiniPalette from './MiniPalette';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,10 +21,13 @@ const PaletteList = (props) => {
   const [idToDelete, setIdToDelete] = useState('');
   const { palettes, classes, deletePalette } = props;
 
-  const openDialog = (id) => {
-    setOpenDeleteDialog(true);
-    setIdToDelete(id);
-  };
+  const openDialog = useCallback(
+    (id) => {
+      setOpenDeleteDialog(true);
+      setIdToDelete(id);
+    },
+    [palettes]
+  );
 
   const closeDialog = () => {
     setOpenDeleteDialog(false);
@@ -32,14 +35,17 @@ const PaletteList = (props) => {
   };
 
   //đối với những interactive content, bên trong có nhiều component khác (như colorBox) thì ko nên dùng Link mà dùng History.push
-  const goToPalette = (id) => {
+  const goToPalette = useCallback((id) => {
     props.history.push(`/palette/${id}`);
-  };
+  }, []);
 
-  const handleDelete = (idToDelete) => {
-    deletePalette(idToDelete);
-    closeDialog();
-  };
+  const handleDelete = useCallback(
+    (idToDelete) => {
+      deletePalette(idToDelete);
+      closeDialog();
+    },
+    [idToDelete, palettes]
+  );
 
   return (
     <div className={classes.root}>
@@ -54,8 +60,8 @@ const PaletteList = (props) => {
               <MiniPalette
                 {...palette}
                 //make it arrow function because WE NEED TO PASS IN THE ID
-                handleClick={() => goToPalette(palette.id)}
-                //deletePalette={deletePalette}
+                //handleClick={() => goToPalette(palette.id)}
+                handleClick={goToPalette}
                 openDialog={openDialog}
                 key={palette.id}
                 id={palette.id}
