@@ -1,45 +1,53 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { DRAWER_WIDTH } from "../constants";
+import { makeStyles } from '@material-ui/core/styles';
+import { DRAWER_WIDTH } from '../constants';
+import sizes from './sizes';
 
 const drawerWidth = DRAWER_WIDTH;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: 'flex',
   },
   hide: {
-    display: "none"
+    display: 'none',
   },
   appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: 64
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 64,
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   navBtn: {
-    marginRight: "1rem",
-    "& a": {
-      textDecoration: "none"
-    }
+    marginRight: '1rem',
+    '& a': {
+      textDecoration: 'none',
+    },
+    [sizes.down('xs')]: {
+      marginRight: '0.5rem',
+    },
   },
   button: {
-    margin: "0 0.5rem"
-  }
+    margin: '0 0.5rem',
+    [sizes.down('xs')]: {
+      margin: '0 0.2rem',
+      padding: '0.3rem',
+    },
+  },
 }));
 
 export default useStyles;

@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Picker } from "emoji-mart";
-import "emoji-mart/css/emoji-mart.css";
+import React, { useState, useEffect } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { Picker } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
-const PaletteMetaForm = props => {
-  const [stage, setStage] = React.useState("form");
-  const [newPaletteName, setNewPaletteName] = useState("");
+const PaletteMetaForm = (props) => {
+  const [stage, setStage] = React.useState('form');
+  const [newPaletteName, setNewPaletteName] = useState('');
   const { palettes, savePalette, hideForm } = props;
 
-  const handleNewPaletteNameChange = e => {
+  const handleNewPaletteNameChange = (e) => {
     setNewPaletteName(e.target.value);
   };
 
   const showEmojiPicker = () => {
-    setStage("emoji");
+    setStage('emoji');
   };
 
   useEffect(() => {
-    ValidatorForm.addValidationRule("isPaletteNameUnique", value => {
+    ValidatorForm.addValidationRule('isPaletteNameUnique', (value) => {
       return palettes.every(
         ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
       );
     });
   }, []);
 
-  const saveFinalPalette = emojiObject => {
+  const saveFinalPalette = (emojiObject) => {
     savePalette({
       paletteName: newPaletteName,
-      emoji: emojiObject.native
+      emoji: emojiObject.native,
     });
+    setStage('');
   };
 
   return (
     <div>
-      <Dialog open={stage === "emoji"} onClose={hideForm}>
+      <Dialog open={stage === 'emoji'} onClose={hideForm}>
         <DialogTitle id='form-dialog-title'>Pick an Emoji</DialogTitle>
         <Picker onSelect={saveFinalPalette} title='Pick palette emoji' />
       </Dialog>
       <Dialog
-        open={stage === "form"}
+        open={stage === 'form'}
         onClose={hideForm}
         aria-labelledby='form-dialog-title'
       >
@@ -62,8 +62,8 @@ const PaletteMetaForm = props => {
               fullWidth
               margin='normal'
               onChange={handleNewPaletteNameChange}
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter Palette Name", "Name already taken"]}
+              validators={['required', 'isPaletteNameUnique']}
+              errorMessages={['Enter Palette Name', 'Name already taken']}
             />
           </DialogContent>
           <DialogActions>

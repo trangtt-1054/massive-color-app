@@ -1,24 +1,25 @@
-import React, { useState } from "react";
-import PaletteFormNav from "./PaletteFormNav";
-import ColorPickerForm from "./ColorPickerForm";
-import clsx from "clsx";
-import { useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import DraggableColorList from "./DraggableColorList";
-import { arrayMove } from "react-sortable-hoc";
-import useStyles from "./styles/NewPaletteFormStyle";
+import React, { useState } from 'react';
+import PaletteFormNav from './PaletteFormNav';
+import ColorPickerForm from './ColorPickerForm';
+import clsx from 'clsx';
+import { useTheme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import DraggableColorList from './DraggableColorList';
+import { arrayMove } from 'react-sortable-hoc';
+import useStyles from './styles/NewPaletteFormStyle';
+import seedColors from './seedColors';
 
 export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const [colors, setColors] = useState(props.palettes[0].colors);
+  const [colors, setColors] = useState(seedColors[0].colors);
   const { palettes, maxColors } = props;
   const paletteFull = colors.length >= maxColors;
 
@@ -26,21 +27,21 @@ export default function PersistentDrawerLeft(props) {
     setOpen(false);
   };
 
-  const addColor = newColor => {
+  const addColor = (newColor) => {
     setColors([...colors, newColor]);
   };
 
-  const savePalette = finalPalette => {
+  const savePalette = (finalPalette) => {
     props.savePalette({
       ...finalPalette,
-      id: finalPalette.paletteName.toLowerCase().replace(/ /g, "-"),
-      colors
+      id: finalPalette.paletteName.toLowerCase().replace(/ /g, '-'),
+      colors,
     });
-    props.history.push("/");
+    props.history.push('/');
   };
 
-  const deleteColor = colorName => {
-    setColors(colors.filter(color => color.name !== colorName));
+  const deleteColor = (colorName) => {
+    setColors(colors.filter((color) => color.name !== colorName));
   };
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
@@ -52,9 +53,17 @@ export default function PersistentDrawerLeft(props) {
   };
 
   const addRandomColor = () => {
-    const allColors = props.palettes.map(palette => palette.colors).flat();
-    var randomIndex = Math.floor(Math.random() * allColors.length);
-    const randomColor = allColors[randomIndex];
+    const allColors = props.palettes.map((palette) => palette.colors).flat();
+    let randomIndex;
+    let randomColor;
+    let isDuplicateColor = true;
+    while (isDuplicateColor) {
+      randomIndex = Math.floor(Math.random() * allColors.length);
+      randomColor = allColors[randomIndex];
+      isDuplicateColor = colors.some(
+        (color) => color.name === randomColor.name
+      );
+    }
     setColors([...colors, randomColor]);
   };
 
@@ -74,12 +83,12 @@ export default function PersistentDrawerLeft(props) {
         anchor='left'
         open={open}
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
         }}
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
+            {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
             ) : (
               <ChevronRightIcon />
@@ -119,7 +128,7 @@ export default function PersistentDrawerLeft(props) {
       </Drawer>
       <main
         className={clsx(classes.content, {
-          [classes.contentShift]: open
+          [classes.contentShift]: open,
         })}
       >
         <div className={classes.drawerHeader} />
@@ -135,5 +144,5 @@ export default function PersistentDrawerLeft(props) {
 }
 
 PersistentDrawerLeft.defaultProps = {
-  maxColors: 20
+  maxColors: 20,
 };
