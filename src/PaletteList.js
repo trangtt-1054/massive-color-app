@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import MiniPalette from './MiniPalette';
 import { withStyles } from '@material-ui/styles';
 import styles from './styles/PaletteListStyles';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 class PaletteList extends Component {
   //đối với những interactive content, bên trong có nhiều component khác (như colorBox) thì ko nên dùng Link mà dùng History.push
@@ -19,18 +20,20 @@ class PaletteList extends Component {
             <h1 className={classes.heading}>Trang's Colors</h1>
             <Link to='/palette/new'>Create Palette</Link>
           </nav>
-          <div className={classes.palettes}>
+          <TransitionGroup className={classes.palettes}>
             {palettes.map((palette) => (
-              <MiniPalette
-                {...palette}
-                //make it arrow function because WE NEED TO PASS IN THE ID
-                handleClick={() => this.goToPalette(palette.id)}
-                deletePalette={deletePalette}
-                key={palette.id}
-                id={palette.id}
-              />
+              <CSSTransition key={palette.id} classNames='fade' timeout={500}>
+                <MiniPalette
+                  {...palette}
+                  //make it arrow function because WE NEED TO PASS IN THE ID
+                  handleClick={() => this.goToPalette(palette.id)}
+                  deletePalette={deletePalette}
+                  key={palette.id}
+                  id={palette.id}
+                />
+              </CSSTransition>
             ))}
-          </div>
+          </TransitionGroup>
         </div>
       </div>
     );
