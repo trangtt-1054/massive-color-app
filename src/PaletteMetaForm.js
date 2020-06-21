@@ -35,6 +35,7 @@ const PaletteMetaForm = (props) => {
       paletteName: newPaletteName,
       emoji: emojiObject.native,
     });
+    setStage('');
   };
 
   return (
