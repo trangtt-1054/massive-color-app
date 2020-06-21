@@ -10,7 +10,7 @@ const MiniPalette = (props) => {
     emoji,
     colors,
     handleClick,
-    deletePalette,
+    openDialog,
     id,
   } = props; //vì wrap withStyles nên props sẽ có thêm 1 cái là classes, trong classes thì có các classes đã define ở trên, for this component only
   const miniColorBoxes = colors.map((color) => (
@@ -24,7 +24,7 @@ const MiniPalette = (props) => {
   const handleDelete = (e) => {
     e.stopPropagation();
     //lấy id ở đâu? phải pass id từ PaletteList
-    deletePalette(id);
+    openDialog(id);
   };
 
   return (
