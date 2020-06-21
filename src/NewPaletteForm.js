@@ -54,8 +54,16 @@ export default function PersistentDrawerLeft(props) {
 
   const addRandomColor = () => {
     const allColors = props.palettes.map((palette) => palette.colors).flat();
-    var randomIndex = Math.floor(Math.random() * allColors.length);
-    const randomColor = allColors[randomIndex];
+    let randomIndex;
+    let randomColor;
+    let isDuplicateColor = true;
+    while (isDuplicateColor) {
+      randomIndex = Math.floor(Math.random() * allColors.length);
+      randomColor = allColors[randomIndex];
+      isDuplicateColor = colors.some(
+        (color) => color.name === randomColor.name
+      );
+    }
     setColors([...colors, randomColor]);
   };
 
