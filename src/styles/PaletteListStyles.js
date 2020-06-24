@@ -20,7 +20,7 @@ export default {
     /* background by SVGBackgrounds.com */
     backgroundColor: '#4951aa',
     backgroundImage: `url(${bg})`,
-    overflow: 'scroll',
+    //overflow: 'scroll',
   },
   heading: {
     fontSize: '2rem',
