@@ -1,50 +1,50 @@
-import React, { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import MiniPalette from './MiniPalette';
-import Dialog from '@material-ui/core/Dialog';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
-import { withStyles } from '@material-ui/styles';
-import styles from './styles/PaletteListStyles';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React, { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
+import MiniPalette from "./MiniPalette";
+import Dialog from "@material-ui/core/Dialog";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import ListItemText from "@material-ui/core/ListItemText";
+import CheckIcon from "@material-ui/icons/Check";
+import CloseIcon from "@material-ui/icons/Close";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import blue from "@material-ui/core/colors/blue";
+import red from "@material-ui/core/colors/red";
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles/PaletteListStyles";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const PaletteList = (props) => {
+const PaletteList = props => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [idToDelete, setIdToDelete] = useState('');
+  const [idToDelete, setIdToDelete] = useState("");
   const { palettes, classes, deletePalette } = props;
 
-  const openDialog = useCallback(
-    (id) => {
-      setOpenDeleteDialog(true);
-      setIdToDelete(id);
-    },
-    [palettes]
-  );
+  const openDialog = useCallback(id => {
+    setOpenDeleteDialog(true);
+    setIdToDelete(id);
+  }, []);
 
   const closeDialog = () => {
     setOpenDeleteDialog(false);
-    setIdToDelete('');
+    setIdToDelete("");
   };
 
   //đối với những interactive content, bên trong có nhiều component khác (như colorBox) thì ko nên dùng Link mà dùng History.push
-  const goToPalette = useCallback((id) => {
-    props.history.push(`/palette/${id}`);
-  }, []);
+  const goToPalette = useCallback(
+    id => {
+      props.history.push(`/palette/${id}`);
+    },
+    [props.history]
+  );
 
   const handleDelete = useCallback(
-    (idToDelete) => {
+    idToDelete => {
       deletePalette(idToDelete);
       closeDialog();
     },
-    [idToDelete, palettes]
+    [deletePalette]
   );
 
   return (
@@ -55,7 +55,7 @@ const PaletteList = (props) => {
           <Link to='/palette/new'>Create Palette</Link>
         </nav>
         <TransitionGroup className={classes.palettes}>
-          {palettes.map((palette) => (
+          {palettes.map(palette => (
             <CSSTransition key={palette.id} classNames='fade' timeout={500}>
               <MiniPalette
                 {...palette}

@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import seedColors from './seedColors';
-import { generatePalette } from './colorHelpers';
-import { Switch, Route } from 'react-router-dom';
-import PaletteList from './PaletteList';
-import SingleColorPalette from './SingleColorPalette';
-import NewPaletteForm from './NewPaletteForm';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import Palette from './Palette';
-import Page from './Page';
+import React, { useState, useEffect, useCallback } from "react";
+import seedColors from "./seedColors";
+import { generatePalette } from "./colorHelpers";
+import { Switch, Route } from "react-router-dom";
+import PaletteList from "./PaletteList";
+import SingleColorPalette from "./SingleColorPalette";
+import NewPaletteForm from "./NewPaletteForm";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import Palette from "./Palette";
+import Page from "./Page";
 
 function App() {
-  const savedPalettes = JSON.parse(window.localStorage.getItem('palettes'));
+  const savedPalettes = JSON.parse(window.localStorage.getItem("palettes"));
 
   const [palettes, setPalettes] = useState(savedPalettes || seedColors);
 
-  const findPalette = (id) => {
-    return palettes.find((palette) => palette.id === id);
+  const findPalette = id => {
+    return palettes.find(palette => palette.id === id);
   };
 
-  const savePalette = (newPalette) => {
+  const savePalette = newPalette => {
     setPalettes([...palettes, newPalette]);
   };
 
-  const syncLocalStorage = () => {
-    window.localStorage.setItem('palettes', JSON.stringify(palettes));
-  };
+  const syncLocalStorage = useCallback(() => {
+    window.localStorage.setItem("palettes", JSON.stringify(palettes));
+  }, [palettes]);
 
-  const deletePalette = (id) => {
-    setPalettes(palettes.filter((palette) => palette.id !== id));
+  const deletePalette = id => {
+    setPalettes(palettes.filter(palette => palette.id !== id));
   };
 
   useEffect(() => {
     syncLocalStorage();
-  }, [palettes]);
+  }, [syncLocalStorage]);
 
   return (
     <Route
@@ -43,7 +43,7 @@ function App() {
               <Route
                 exact
                 path='/palette/new'
-                render={(routeProps) => (
+                render={routeProps => (
                   <Page>
                     <NewPaletteForm
                       palettes={palettes}
@@ -56,7 +56,7 @@ function App() {
               <Route
                 exact
                 path='/'
-                render={(routeProps) => (
+                render={routeProps => (
                   <Page>
                     <PaletteList
                       palettes={palettes}
@@ -69,7 +69,7 @@ function App() {
               <Route
                 exact
                 path='/palette/:id'
-                render={(routeProps) => (
+                render={routeProps => (
                   <Page>
                     <Palette
                       palette={generatePalette(
@@ -82,7 +82,7 @@ function App() {
               <Route
                 exact
                 path='/palette/:paletteId/:colorId'
-                render={(routeProps) => (
+                render={routeProps => (
                   <Page>
                     <SingleColorPalette
                       colorId={routeProps.match.params.colorId}
@@ -94,7 +94,7 @@ function App() {
                 )}
               />
               <Route
-                render={(routeProps) => (
+                render={routeProps => (
                   <Page>
                     <PaletteList
                       palettes={palettes}
